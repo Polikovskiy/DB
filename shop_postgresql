@@ -1,35 +1,53 @@
-CREATE DATABASE shop
+-- 1. Создать базу данных shop.
+CREATE DATABASE shop;
+-- 2. Создать юзера shop и дать ему полный доступ к БД shop.
 CREATE USER "admin" with password '111080zz';
 GRANT ALL PRIVILEGES ON DATABASE shop TO "user";
+-- 4. Создать таблицу для хранения категорий (хранить название).
 CREATE TABLE category (
 	category_id integer,
 	category_name varchar(20),
 	PRIMARY KEY (category_id));
+-- 5. Добавить несколько категорий.
 INSERT INTO "category" (category_id, category_name) VALUES (1, 'fruit');
 INSERT INTO "category" (category_id, category_name) VALUES (2, 'vegetables');
 INSERT INTO "category" (category_id, category_name) VALUES (3, 'drink');
+-- 6. Создать таблицу для хранения товаров (название, категория, цена).
 CREATE TABLE product (
 	product_id integer PRIMARY KEY,
 	product_name varchar(20),
 	product_price money,
 	product_category integer REFERENCES category (category_id));
+-- 7. Внести несколько товаров по цене 1.00
 INSERT INTO "product" (product_id, product_name, product_category, product_price) VALUES (1, 'banana', 1, 1);
 INSERT INTO "product" (product_id, product_name, product_category, product_price) VALUES (2, 'cucumber', 2, 1);
 INSERT INTO "product" (product_id, product_name, product_category, product_price) VALUES (3, 'pepsi', 3, 1);
 INSERT INTO "product" (product_id, product_name, product_category, product_price) VALUES (4, 'ananas', 1, 1);
 INSERT INTO "product" (product_id, product_name, product_category, product_price) VALUES (5, 'tomato', 2, 1);
 INSERT INTO "product" (product_id, product_name, product_category, product_price) VALUES (6, 'fanta', 3, 1);
+--8. Обновить цену первого товара — 3.50
 UPDATE "product" SET product_price=3.5 WHERE product_id=1;
+--9. Увеличить цену всех товаров на 10%.
 UPDATE "product" SET product_price=product_price*1.1 ;
+--10. Удалить товар № 2.
 DELETE FROM "product" WHERE product_id=2;
+--11. Выбрать все товары с сортировкой по названию.
 SELECT * FROM "product" ORDER BY product_name;
+--Выбрать все товары с сортировкой по убыванию цены.
 SELECT * FROM "product" ORDER BY product_price DESC;
+--13. Выбрать 3 самых дорогих товара.
 SELECT * FROM "product" ORDER BY product_price DESC LIMIT 3;
+--14. Выбрать 3 самых дешевых товара.
 SELECT * FROM "product" ORDER BY product_price LIMIT 3;
+--15. Выбрать вторую тройку самых дорогих товаров (с 4 по 6).
 SELECT * FROM "product" ORDER BY product_price DESC LIMIT 3 OFFSET 3;
+--16. Выбрать наименование самого дорогого товара.
 SELECT product_name FROM "product" ORDER BY product_price DESC LIMIT 1;
+--17. Выбрать наименование самого дешевого товара.
 SELECT product_name FROM "product" ORDER BY product_price LIMIT 1;
+--18. Выбрать количество всех товаров.
 SELECT count(*) FROM "product";
+--19. Выбрать среднюю цену всех товаров.
 SELECT sum(product_price)/count(product_price) AS avg_foo FROM "product";
+--20. Создать представление (create view) с отображением 3 самых дорогих товаров.
 CREATE VIEW my_view AS SELECT product_name FROM "product" ORDER BY product_price DESC LIMIT 3;
-
