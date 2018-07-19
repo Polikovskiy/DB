@@ -1,0 +1,36 @@
+CREATE DATABASE shop;
+GRANT ALL ON shop.* TO 'admin'@'localhost' IDENTIFIED BY '111080ZZ';
+GRANT SELECT ON shop.* TO 'gues'@'localhost' IDENTIFIED BY '1111';
+USE shop;
+CREATE TABLE category (
+	category_id integer,
+	category_name varchar(20),
+	PRIMARY KEY (category_id));
+INSERT INTO category (category_id, category_name) VALUES (1, 'fruit');
+INSERT INTO category (category_id, category_name) VALUES (2, 'vegetables');
+INSERT INTO category (category_id, category_name) VALUES (3, 'drink');
+CREATE TABLE product (
+	product_id integer PRIMARY KEY,
+	product_name varchar(20),
+	product_price decimal(10,2),
+	product_category integer REFERENCES category (category_id));
+INSERT INTO product (product_id, product_name, product_category, product_price) VALUES (1, 'banana', 1, 1);
+INSERT INTO product (product_id, product_name, product_category, product_price) VALUES (2, 'cucumber', 2, 1);
+INSERT INTO product (product_id, product_name, product_category, product_price) VALUES (3, 'pepsi', 3, 1);
+INSERT INTO product (product_id, product_name, product_category, product_price) VALUES (4, 'ananas', 1, 1);
+INSERT INTO product (product_id, product_name, product_category, product_price) VALUES (5, 'tomato', 2, 1);
+INSERT INTO product (product_id, product_name, product_category, product_price) VALUES (6, 'fanta', 3, 1);
+UPDATE "product" SET product_price=3.5 WHERE product_id=1;
+UPDATE "product" SET product_price=product_price*1.1 ;
+DELETE FROM "product" WHERE product_id=2;
+SELECT * FROM product ORDER BY product_name;
+SELECT * FROM product ORDER BY product_price DESC;
+SELECT * FROM product ORDER BY product_price DESC LIMIT 3;
+SELECT * FROM product ORDER BY product_price LIMIT 3;
+SELECT * FROM product ORDER BY product_price DESC LIMIT 3 OFFSET 3;
+SELECT product_name FROM product ORDER BY product_price DESC LIMIT 1;
+SELECT product_name FROM product ORDER BY product_price LIMIT 1;
+SELECT count(*) FROM product;
+SELECT AVG(product_price) FROM product;
+CREATE VIEW my_view AS SELECT product_name FROM product ORDER BY product_price DESC LIMIT 3;
+
